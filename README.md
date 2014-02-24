@@ -10,3 +10,15 @@ AS3 NSLibrary
 * CurvedPath - creates complex shapes with rounded corners; 
 * SFXEngine - manager for sound channels; 
 * CodeListener, KeyListener - keyboard helpers, CodeListener gives ability to register magic words for callback.
+
+## TextField
+
+TextField based on Text Layout Framework, perceive this component as Label. Uses invalidation model to update its state.
+With this DF4 TextField you will be able create pixel perfect designs without magic paddings or margins.
+
+```as3
+var factory:DF4TextFieldFactory = new DF4TextFieldFactory();
+var fontName: String = "SomeFontName";
+addChild(factory.createTextField("Some static text with DF4 fonts", factory.createTextFormat(fontName, 14, 0x333333, FontWeight.NORMAL, null, null, TextAlign.LEFT)));
+```
+
