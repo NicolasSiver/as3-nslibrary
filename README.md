@@ -22,3 +22,24 @@ var fontName: String = "SomeFontName";
 addChild(factory.createTextField("Some static text with DF4 fonts", factory.createTextFormat(fontName, 14, 0x333333, FontWeight.NORMAL, null, null, TextAlign.LEFT)));
 ```
 
+## DataManager
+
+DataManager is wrapper for SharedObject. It provides persistence. Its very easy to save some primitive values and restore them. For example, user disabled music, and don't want hear it anymore.
+
+```as3
+//Save state, where Cache.SOUNDS, Cache.DOMAIN - some strings
+DataManager.getInstance().registerVar(player.isSoundsPlaying, Cache.SOUNDS, Cache.DOMAIN);
+
+//Restore state
+private function restoreSoundsState():Boolean {
+    var isSet:Object = DataManager.getInstance().getValue(Cache.SOUNDS, Cache.DOMAIN);
+
+    if (isSet != null) {
+        var soundState:Boolean = Boolean(isSet);
+        SoundMixer.soundTransform = new SoundTransform(int(soundState));
+        return soundState;
+    }
+
+    return true;
+}
+```
