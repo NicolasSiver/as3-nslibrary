@@ -57,3 +57,27 @@ myClip.playUntil(88);
 //after
 myClip.goTo(ControlledMovieClip.START);
 ```
+
+## Transform
+
+Utility class for transformation calculations. Very helpful for situations when you need fit something with ScaleMode rule in dedicated zone, for example: downloaded image, or auto resizing components.
+
+```as3
+/var width: uint = 800;
+var height: uint = 600;
+var someObject: Shape = new Shape();
+var size: Rectangle;
+
+//Dummy object, bigger than defined zone
+someObject.graphics.beginFill(0x009900, 0.5);
+someObject.graphics.drawRect(0, 0, 1024, 768);
+
+//Letterbox - sets the width and height of the content
+//as close to the container width and height as possible while maintaining aspect ratio
+size = new Transform().getScaledSize(ScaleMode.LETTERBOX, width, height, someObject.width, someObject.height);
+
+someObject.x = size.x;
+someObject.y = size.y;
+someObject.width = size.width;
+someObject.height = size.height;
+```
