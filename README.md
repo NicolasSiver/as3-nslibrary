@@ -63,7 +63,7 @@ myClip.goTo(ControlledMovieClip.START);
 Utility class for transformation calculations. Very helpful for situations when you need fit something with ScaleMode rule in dedicated zone, for example: downloaded image, or auto resizing components.
 
 ```as3
-/var width: uint = 800;
+var width: uint = 800;
 var height: uint = 600;
 var someObject: Shape = new Shape();
 var size: Rectangle;
@@ -80,4 +80,20 @@ someObject.x = size.x;
 someObject.y = size.y;
 someObject.width = size.width;
 someObject.height = size.height;
+```
+
+## CurvedPath
+
+Graphics utility class for creating complex shapes with curved corners.
+By the help of CurvedPath you will be able create such shapes:
+
+![Simple Curved Shape](http://i.imgur.com/Kyopatq.png)
+
+```as3
+var curvedPath : CurvedPath = new CurvedPath();
+curvedPath.create(Vector.<CurvedPoint>([new CurvedPoint(somePosX, somePosX, 0), new CurvedPoint(somePosX, somePosX, someRadius), …]));
+
+//Use generated path data
+graphics.beginFill(0x009900, 0.8);
+graphics.drawPath(curvedPath.commands, curvedPath.data);
 ```
