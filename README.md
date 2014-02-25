@@ -43,3 +43,17 @@ private function restoreSoundsState():Boolean {
     return true;
 }
 ```
+
+## RollButton, ControlledMovieClip
+
+MovieClip wrappers. RollButton is an easy way to create interactive MovieClip with RollOver/RollOut animation, all you need is to create MovieClip with hover animation. ControlledMovieClip encapsulates inner enter frame to give you ability reach Start/End/Concrete frame with one line of code.
+
+```as3
+//Specify base class as RollButton in the Flash Professional or create it:
+var button: RollButton = new RollButton(new SomeMovieClip());
+
+var myClip: ControlledMovieClip = new SomePredefinedMovieClip();
+myClip.playUntil(88);
+//after
+myClip.goTo(ControlledMovieClip.START);
+```
