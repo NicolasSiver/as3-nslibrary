@@ -36,6 +36,7 @@ package im.siver.library.data {
             _dynamicVars = {};
             _languageVars = {};
             _logger = new TraceLogger();
+
         }
 
         public static function getInstance():DataManager {

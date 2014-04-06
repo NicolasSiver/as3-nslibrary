@@ -20,9 +20,12 @@
 
 package im.siver.library.sound {
 
+    import flash.display.Sprite;
+    import flash.events.MouseEvent;
     import flash.media.Sound;
     import flash.media.SoundChannel;
     import flash.media.SoundTransform;
+    import flash.text.TextField;
 
     import im.siver.library.data.DebugColors;
     import im.siver.library.logging.ILogger;
@@ -187,6 +190,8 @@ package im.siver.library.sound {
             var sfxChannel:SFXChannel = this.getSFXChannel($sfxChannelName);
             _logger.log($sfxChannelName + ": Update sound channel " + $id + ", to volume: " + $volume + ", pan: " + $pan, DebugColors.SFX);
             sfxChannel.updateChannel($id, $volume, $pan);
+
+
         }
 
         /*

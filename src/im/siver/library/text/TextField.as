@@ -24,7 +24,6 @@ package im.siver.library.text {
     import flash.display.Sprite;
     import flash.events.Event;
     import flash.text.TextFieldType;
-    import flash.utils.Dictionary;
 
     import flashx.textLayout.container.ContainerController;
     import flashx.textLayout.conversion.TextConverter;
@@ -37,9 +36,9 @@ package im.siver.library.text {
 
     public class TextField extends Sprite {
         public static var inCallLaterPhase:Boolean = false;
-        public var version:String = "1.0.0";
+        public var version:String = "1.0.2";
         // General
-        protected var _callLaterMethods:Dictionary;
+        protected var _callLaterMethods:Array;
         protected var _enabled:Boolean = true;
         protected var _invalidHash:Object;
         protected var _width:Number;
@@ -66,21 +65,21 @@ package im.siver.library.text {
         protected var _unfocusedSelectionFormat:SelectionFormat;
         protected var _inactiveSelectionFormat:SelectionFormat;
         protected var _selectionManager:SelectionManager;
-        protected var _editManager:EditManager;
+        private var _editManager:EditManager;
 
         public function TextField() {
             _invalidHash = {};
-            _callLaterMethods = new Dictionary();
+            _callLaterMethods = [];
             this.initiate();
             invalidate(InvalidationType.ALL);
         }
 
-        protected function callLater($fn:Function):void {
+        protected function callLater(func:Function):void {
             if (TextField.inCallLaterPhase) {
                 return;
             }
 
-            _callLaterMethods[$fn] = true;
+            _callLaterMethods.push(func);
 
             if (this.stage != null) {
                 this.stage.addEventListener(Event.RENDER, onCallLater, false, 0, true);
@@ -251,11 +250,13 @@ package im.siver.library.text {
 
             TextField.inCallLaterPhase = true;
 
-            var methods:Dictionary = _callLaterMethods;
-            for (var method:Object in methods) {
-                Function(method)();
-                delete(methods[method]);
+            var i:uint, len:uint = _callLaterMethods.length, method:Function;
+
+            for (i; i < len; ++i) {
+                method = _callLaterMethods[i];
+                method();
             }
+            _callLaterMethods.length = 0;
             TextField.inCallLaterPhase = false;
         }
 
@@ -264,7 +265,7 @@ package im.siver.library.text {
          */
         public function set defaultTextFormat($format:TextLayoutFormat):void {
             _textFormat = $format;
-            this.invalidate(InvalidationType.STYLES);
+            invalidate(InvalidationType.STYLES);
         }
 
         override public function get width():Number {
@@ -311,6 +312,11 @@ package im.siver.library.text {
             this.invalidate(InvalidationType.STYLES);
         }
 
+        public function set editManager(value:EditManager):void {
+            _editManager = value;
+            invalidate(InvalidationType.STYLES);
+        }
+
         override public function get scaleX():Number {
             return _width / _startWidth;
         }
@@ -327,8 +333,15 @@ package im.siver.library.text {
             setSize(_width, _startHeight * $value);
         }
 
-        public function get text():String {
+        /**
+         * Return same text that was set by setter
+         */
+        public function get rawText():String {
             return _rawContent;
+        }
+
+        public function get text():String {
+            return _textFlow.getText();
         }
 
         public function set text($value:String):void {
